@@ -1,7 +1,7 @@
 tytools_python
 ==============
 
-Uploads firmware to multiple embedded devices.
+Python wrapper for tytools collection of tools to manage Teensy boards.
 
 Authors::
 

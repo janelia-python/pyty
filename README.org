@@ -4,13 +4,13 @@
 
 * Package Information
   - Name :: tytools_python
-  - Version :: 0.5.0
+  - Version :: 0.1.0
   - License :: BSD
   - URL :: https://github.com/janelia-pypi/tytools_python
   - Author :: Peter Polidoro
   - Email :: peterpolidoro@gmail.com
 
-  Uploads firmware to multiple embedded devices.
+  Python wrapper for tytools collection of tools to manage Teensy boards.
 
 * Example Usage
 
