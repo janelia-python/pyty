@@ -1,0 +1,22 @@
+#+TITLE: tytools_python
+#+AUTHOR: Peter Polidoro
+#+EMAIL: peterpolidoro@gmail.com
+
+* Package Information
+  - Name :: tytools_python
+  - Version :: 0.5.0
+  - License :: BSD
+  - URL :: https://github.com/janelia-pypi/tytools_python
+  - Author :: Peter Polidoro
+  - Email :: peterpolidoro@gmail.com
+
+  Uploads firmware to multiple embedded devices.
+
+* Example Usage
+
+  #+BEGIN_SRC sh
+  #+END_SRC
+
+* Installation
+
+  [[https://github.com/janelia-pypi/python_setup]]
