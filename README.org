@@ -1,16 +1,16 @@
-#+TITLE: tytools_python
+#+TITLE: pyty
 #+AUTHOR: Peter Polidoro
 #+EMAIL: peterpolidoro@gmail.com
 
 * Package Information
-  - Name :: tytools_python
+  - Name :: pyty
   - Version :: 0.1.0
   - License :: BSD
-  - URL :: https://github.com/janelia-pypi/tytools_python
+  - URL :: https://github.com/janelia-pypi/pyty
   - Author :: Peter Polidoro
   - Email :: peterpolidoro@gmail.com
 
-  Python wrapper for tytools collection of tools to manage Teensy boards.
+  Python wrapper for TyTools collection of tools to manage Teensy boards.
 
 * Example Usage
 

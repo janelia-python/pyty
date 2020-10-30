@@ -21,7 +21,7 @@ setup(
     long_description=long_description,
 
     # The project's main homepage.
-    url='https://github.com/janelia-pypi/tytools_python',
+    url='https://github.com/janelia-pypi/pyty',
 
     # Author details
     author='Peter Polidoro',

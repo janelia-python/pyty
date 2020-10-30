@@ -1,7 +1,7 @@
-tytools_python
-==============
+pyty
+====
 
-Python wrapper for tytools collection of tools to manage Teensy boards.
+Python wrapper for TyTools collection of tools to manage Teensy boards.
 
 Authors::
 
