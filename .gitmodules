@@ -1,0 +1,3 @@
+[submodule "src/tytools"]
+	path = src/tytools
+	url = https://github.com/Koromix/tytools.git
