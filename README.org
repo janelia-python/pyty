@@ -20,8 +20,13 @@
 * Build
 
   #+BEGIN_SRC sh
+    sudo apt-get install build-essential cmake libudev-dev qtbase5-dev pkg-config
+    git clone https://github.com/janelia-pypi/pyty.git
+    cd pyty
+    git submodule init
+    git submodule update
     mkdir -p ~/venvs
     python3 -m venv ~/venvs/env && source ~/venvs/env/bin/activate
     pip install -U pip wheel setuptools
-    sudo apt-get install build-essential cmake libudev-dev qtbase5-dev pkg-config
+    python setup.py develop
   #+END_SRC
