@@ -4,6 +4,7 @@ import sys
 import sysconfig
 import platform
 import subprocess
+import pathlib
 
 from distutils.version import LooseVersion
 from setuptools import setup, find_packages, Extension
@@ -66,7 +67,9 @@ class CMakeBuild(build_ext):
             self.distribution.get_version())
         if not os.path.exists(self.build_temp):
             os.makedirs(self.build_temp)
-        subprocess.check_call(['cmake', ext.sourcedir] + cmake_args,
+        cmake_path = pathlib.Path(ext.sourcedir) / 'src' / 'tytools'
+        print('cmake_path = {0}'.format(cmake_path))
+        subprocess.check_call(['cmake', cmake_path] + cmake_args,
                               cwd=self.build_temp, env=env)
         subprocess.check_call(['cmake', '--build', '.'] + build_args,
                               cwd=self.build_temp)
@@ -102,7 +105,7 @@ setup(
     packages=find_packages('src',exclude=['contrib', 'docs', 'tests*']),
     package_dir={'':'src'},
 
-    ext_modules=[CMakeExtension('python_cpp_example/python_cpp_example')],
+    ext_modules=[CMakeExtension('tytools')],
     # add custom build_ext command
     cmdclass=dict(build_ext=CMakeBuild),
     zip_safe=False,
@@ -111,9 +114,9 @@ setup(
                       'sre_yield',
     ],
 
-    entry_points={
-        'console_scripts': [
-            'fu=pyty:cli',
-        ],
-    },
+    # entry_points={
+    #     'console_scripts': [
+    #         'fu=pyty:cli',
+    #     ],
+    # },
 )
