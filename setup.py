@@ -10,7 +10,6 @@ from distutils.version import LooseVersion
 from setuptools import setup, find_packages
 import distutils.cmd
 
-from version import get_git_version
 from codecs import open
 
 here = os.path.abspath(os.path.dirname(__file__))
@@ -118,14 +117,8 @@ class BuildTyToolsCommand(distutils.cmd.Command):
 setup(
     name='pyty',
 
-    use_scm_version = {
-        "root": "..",
-        "relative_to": __file__,
-        "local_scheme": "node-and-timestamp"
-    },
+    use_scm_version = True,
     setup_requires=['setuptools_scm'],
-
-    # version=get_git_version(),
 
     description='Python wrapper for TyTools collection of tools to manage Teensy boards',
     long_description=long_description,
