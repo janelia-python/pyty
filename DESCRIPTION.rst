@@ -12,3 +12,5 @@ License::
     BSD
 
 Example Usage::
+
+  test
