@@ -8,11 +8,11 @@ import shutil
 
 try:
     from pkg_resources import get_distribution, DistributionNotFound
-    _dist = get_distribution('firmware_uploader')
+    _dist = get_distribution('pyty')
     # Normalize case for Windows systems
     dist_loc = os.path.normcase(_dist.location)
     here = os.path.normcase(__file__)
-    if not here.startswith(os.path.join(dist_loc,'firmware_uploader')):
+    if not here.startswith(os.path.join(dist_loc,'pyty')):
         # not installed, but there is another version that *is*
         raise DistributionNotFound
 except (ImportError,DistributionNotFound):
