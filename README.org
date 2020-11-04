@@ -27,7 +27,7 @@
     git submodule update
     mkdir -p ~/venvs
     python3 -m venv ~/venvs/env && source ~/venvs/env/bin/activate
-    pip install -U pip wheel setuptools
-    python setup.py sdist bdist_wheel
+    pip install -U pip wheel setuptools twine
     git clean -xdf && python setup.py sdist bdist_wheel && unzip -l dist/*.whl && tar --list -f dist/*.tar.gz
+    twine upload -r pyty dist/*
   #+END_SRC

@@ -8,52 +8,28 @@ import pathlib
 
 from distutils.version import LooseVersion
 from setuptools import setup, find_packages
-import distutils.cmd
+from setuptools.command.install import install
+from wheel.bdist_wheel import bdist_wheel
 
 from codecs import open
 
-here = os.path.abspath(os.path.dirname(__file__))
+here = pathlib.Path(__file__).resolve().parent
 
-with open(os.path.join(here, 'DESCRIPTION.rst'), encoding='utf-8') as f:
+with open(here.joinpath('DESCRIPTION.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
-def get_virtualenv_path():
-    """Used to work out path to install compiled binaries to."""
-    if hasattr(sys, 'real_prefix'):
-        return sys.prefix
+class BuildTyToolsAndInstall(install):
+    """Custom handler for the 'install' command to build TyTools."""
 
-    if hasattr(sys, 'base_prefix') and sys.base_prefix != sys.prefix:
-        return sys.prefix
-
-    if 'conda' in sys.prefix:
-        return sys.prefix
-
-    return None
-
-class BuildTyToolsCommand(distutils.cmd.Command):
-    """A custom command to compile TyTools."""
-
-    description = 'compile TyTools'
-    user_options = [
-        # The format is (long option, short option, description).
-    ]
     name = 'tytools'
-    sourcedir = pathlib.Path('src') / name
-
-    def initialize_options(self):
-        """Set default values for options."""
-        # Each user option must be listed here with their default value.
-        self.debug = False
-        pass
-
-    def finalize_options(self):
-        """Post-process options."""
-        pass
+    source_path_relative = pathlib.Path('src') / name
+    debug = False
 
     def run(self):
-        self.build_and_install()
+        self.build_tytools()
+        super().run()
 
-    def build_and_install(self):
+    def build_tytools(self):
         try:
             out = subprocess.check_output(['cmake', '--version'])
         except OSError:
@@ -66,23 +42,12 @@ class BuildTyToolsCommand(distutils.cmd.Command):
             if cmake_version < '3.1.0':
                 raise RuntimeError("CMake >= 3.1.0 is required on Windows")
 
-        self.build()
-        self.install()
-
-    def build(self):
-        # extdir = os.path.abspath(
-        #     os.path.dirname(self.get_ext_fullpath(ext.name)))
-        # cmake_args = ['-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=' + extdir,
-        #               '-DPYTHON_EXECUTABLE=' + sys.executable]
         cmake_args = ['-DPYTHON_EXECUTABLE=' + sys.executable]
 
         cfg = 'Debug' if self.debug else 'Release'
         build_args = ['--config', cfg]
 
         if platform.system() == "Windows":
-            # cmake_args += ['-DCMAKE_LIBRARY_OUTPUT_DIRECTORY_{}={}'.format(
-            #     cfg.upper(),
-            #     extdir)]
             if sys.maxsize > 2**32:
                 cmake_args += ['-A', 'x64']
             build_args += ['--', '/m']
@@ -94,25 +59,21 @@ class BuildTyToolsCommand(distutils.cmd.Command):
         env['CXXFLAGS'] = '{} -DVERSION_INFO=\\"{}\\"'.format(
             env.get('CXXFLAGS', ''),
             self.distribution.get_version())
-        if not os.path.exists(self.build_temp):
-            os.makedirs(self.build_temp)
-        subprocess.check_call(['cmake', self.sourcedir] + cmake_args,
-                              cwd=self.build_temp, env=env)
+        build_path = pathlib.Path.cwd() / 'build'
+        if not pathlib.Path.exists(build_path):
+            pathlib.Path.mkdir(build_path)
+        source_path = pathlib.Path.cwd() / self.source_path_relative
+        subprocess.check_call(['cmake', source_path] + cmake_args,
+                              cwd=build_path, env=env)
         subprocess.check_call(['cmake', '--build', '.'] + build_args,
-                              cwd=self.build_temp)
+                              cwd=build_path)
         print()  # Add an empty line for cleaner output
 
-    def install(self):
-        pass
-    #     build_temp = pathlib.Path(self.build_temp).resolve()
-    #     dest_path = pathlib.Path(self.get_ext_fullpath(ext.name)).resolve()
-    #     source_path = build_temp / self.get_ext_filename(ext.name)
-    #     print('source_path = {0}'.format(source_path))
-    #     dest_directory = dest_path.parents[0]
-    #     print('dest_directory = {0}'.format(dest_directory))
-    #     # bin_path = os.path.join(get_virtualenv_path(),'bin')
-    #     # cmake_args += ['-DCMAKE_INSTALL_PREFIX=' + bin_path]
-    #     # print('cmake_args = {0}'.format(cmake_args))
+class ImpureBdistWheel(bdist_wheel):
+
+    def finalize_options(self):
+        super().finalize_options()
+        self.root_is_pure = False
 
 setup(
     name='pyty',
@@ -145,16 +106,22 @@ setup(
     packages=find_packages('src',exclude=['contrib', 'docs', 'tests*']),
     package_dir={'':'src'},
 
-    cmdclass={'build_tytools': BuildTyToolsCommand},
+    cmdclass={'install': BuildTyToolsAndInstall,
+              'bdist_wheel': ImpureBdistWheel},
     zip_safe=True,
 
     install_requires=['Click',
                       'sre_yield',
     ],
 
-    # data_files=[('bin', ['bm/b1.gif', 'bm/b2.gif'])],
-
-    # scripts=['bin/funniest-joke'],
+    data_files=[('bin', ['build/tycmd',
+                         'build/tycommander',
+                         'build/tyupdater',
+                         'build/enumerate_devices',
+                         'build/monitor_devices',
+                         'build/serial_dumper',
+                         'build/test_libty',
+                         ])],
 
     # entry_points={
     #     'console_scripts': [
