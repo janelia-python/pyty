@@ -81,7 +81,7 @@ setup(
     use_scm_version = True,
     setup_requires=['setuptools_scm'],
 
-    description='Python wrapper for TyTools collection of tools to manage Teensy boards',
+    description='Tools for managing Teensy boards.',
     long_description=long_description,
 
     url='https://github.com/janelia-pypi/pyty',
@@ -106,8 +106,10 @@ setup(
     packages=find_packages('src',exclude=['contrib', 'docs', 'tests*']),
     package_dir={'':'src'},
 
-    cmdclass={'install': BuildTyToolsAndInstall,
-              'bdist_wheel': ImpureBdistWheel},
+    # cmdclass={'install': BuildTyToolsAndInstall,
+    #           'bdist_wheel': ImpureBdistWheel},
+    cmdclass={'install': BuildTyToolsAndInstall},
+
     zip_safe=True,
 
     install_requires=['Click',

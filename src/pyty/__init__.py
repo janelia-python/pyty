@@ -1,4 +1,4 @@
 '''
-Python wrapper for TyTools collection of tools to manage Teensy boards
+Tools for managing Teensy boards.
 '''
 from .firmware_uploader import FirmwareUploader, cli, __version__

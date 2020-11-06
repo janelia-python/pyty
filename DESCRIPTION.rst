@@ -1,7 +1,7 @@
 pyty
 ====
 
-Python wrapper for TyTools collection of tools to manage Teensy boards.
+Tools for managing Teensy boards.
 
 Authors::
 

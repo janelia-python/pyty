@@ -10,7 +10,7 @@
   - Author :: Peter Polidoro
   - Email :: peterpolidoro@gmail.com
 
-  Python wrapper for TyTools collection of tools to manage Teensy boards.
+  Tools for managing Teensy boards.
 
 * Example Usage
 
@@ -19,34 +19,40 @@
 
 * Build
 
-  #+BEGIN_SRC sh
-    git clone https://github.com/janelia-pypi/pyty.git
-    cd pyty
-    git submodule init
-    git submodule update
-    # x86-64bit
-    docker run -i -t -v `pwd`:/io quay.io/pypa/manylinux2014_x86_64 /bin/bash
-    # arm-64bit
-    docker run -i -t -v `pwd`:/io quay.io/pypa/manylinux2014_aarch64 /bin/bash
-    yum install gcc gcc-c++ make cmake libudev-devel qt5-qtbase-devel pkgconfig
-    cd io
-    git clean -xdf
-    for variant in /opt/python/*; do rm -rf build && $variant/bin/python setup.py bdist_wheel; done
-    for variant in dist/*.whl; do auditwheel repair $variant; done
-    auditwheel show dist/*.whl
-    auditwheel repair dist/*.whl
-    exit
-    twine upload -r pypi wheelhouse/*
-  #+END_SRC
+** manylinux
 
-  #+BEGIN_SRC sh
-    sudo apt-get install build-essential cmake libudev-dev qtbase5-dev pkg-config
-    git clone https://github.com/janelia-pypi/pyty.git
-    cd pyty
-    git submodule init
-    git submodule update
-    mkdir -p ~/venvs
-    python3 -m venv ~/venvs/env && source ~/venvs/env/bin/activate
-    pip install -U pip wheel setuptools twine
-    git clean -xdf && python setup.py sdist bdist_wheel && unzip -l dist/*.whl && tar --list -f dist/*.tar.gz
-  #+END_SRC
+   #+BEGIN_SRC sh
+     git clone https://github.com/janelia-pypi/pyty.git
+     cd pyty
+     git submodule init
+     git submodule update
+     # x86-64bit
+     docker run -i -t -v `pwd`:/io quay.io/pypa/manylinux2014_x86_64 /bin/bash
+     # arm-64bit
+     docker run -i -t -v `pwd`:/io quay.io/pypa/manylinux2014_aarch64 /bin/bash
+     yum install gcc gcc-c++ make cmake libudev-devel qt5-qtbase-devel pkgconfig
+     cd io
+     git clean -xdf
+     for variant in /opt/python/*; do rm -rf build && $variant/bin/python setup.py bdist_wheel; done
+     for variant in dist/*.whl; do auditwheel repair $variant; done
+     auditwheel show dist/*.whl
+     auditwheel repair dist/*.whl
+     exit
+     twine upload -r pypi wheelhouse/*
+   #+END_SRC
+
+** debian-based
+
+   pypi only hosts manylinux wheels.
+
+   #+BEGIN_SRC sh
+     sudo apt-get install build-essential cmake libudev-dev qtbase5-dev pkg-config
+     git clone https://github.com/janelia-pypi/pyty.git
+     cd pyty
+     git submodule init
+     git submodule update
+     mkdir -p ~/venvs
+     python3 -m venv ~/venvs/env && source ~/venvs/env/bin/activate
+     pip install -U pip wheel setuptools twine
+     git clean -xdf && python setup.py sdist bdist_wheel && unzip -l dist/*.whl && tar --list -f dist/*.tar.gz
+   #+END_SRC
