@@ -9,7 +9,6 @@ import pathlib
 from distutils.version import LooseVersion
 from setuptools import setup, find_packages
 from setuptools.command.install import install
-from wheel.bdist_wheel import bdist_wheel
 
 from codecs import open
 
@@ -69,12 +68,6 @@ class BuildTyToolsAndInstall(install):
                               cwd=build_path)
         print()  # Add an empty line for cleaner output
 
-class ImpureBdistWheel(bdist_wheel):
-
-    def finalize_options(self):
-        super().finalize_options()
-        self.root_is_pure = False
-
 setup(
     name='pyty',
 
@@ -106,8 +99,6 @@ setup(
     packages=find_packages('src',exclude=['contrib', 'docs', 'tests*']),
     package_dir={'':'src'},
 
-    # cmdclass={'install': BuildTyToolsAndInstall,
-    #           'bdist_wheel': ImpureBdistWheel},
     cmdclass={'install': BuildTyToolsAndInstall},
 
     zip_safe=True,
@@ -125,9 +116,9 @@ setup(
                          'build/test_libty',
                          ])],
 
-    # entry_points={
-    #     'console_scripts': [
-    #         'fu=pyty:cli',
-    #     ],
-    # },
+    entry_points={
+        'console_scripts': [
+            'pyty=pyty.cli:main',
+        ],
+    },
 )

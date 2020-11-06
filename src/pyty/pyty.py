@@ -21,13 +21,13 @@ else:
     __version__ = _dist.version
 
 
-class FirmwareUploader(object):
+class Pyty(object):
     '''
-    Uploads firmware to multiple embedded devices.
+    Tools for managing Teensy boards.
 
     Example Usage:
 
-    fu -e teensy40 -d https://github.com/janelia-arduino/YArenaValveController "(/dev/ttyACM)[0-2]"
+    pyty -e teensy40 -d https://github.com/janelia-arduino/YArenaValveController "(/dev/ttyACM)[0-2]"
     # Environment: teensy40
     # Dry Run: True
     # Firmware URL: https://github.com/janelia-arduino/YArenaValveController
@@ -47,14 +47,14 @@ class FirmwareUploader(object):
     # ['stty', '-F', '/dev/ttyACM2', '134']
     # ['pio', 'run', '-e', 'teensy40', '--target', 'upload', '--upload-port', '/dev/ttyACM2']
 
-    fu -e teensy40 https://github.com/janelia-arduino/YArenaValveController "(/dev/ttyACM)[0-2]"
+    pyty -e teensy40 https://github.com/janelia-arduino/YArenaValveController "(/dev/ttyACM)[0-2]"
     # Environment: teensy40
     # Dry Run: False
     # Firmware URL: https://github.com/janelia-arduino/YArenaValveController
     # Upload ports: ['/dev/ttyACM0', '/dev/ttyACM1', '/dev/ttyACM2']
     # Do you want to continue? [y/N]:
 
-    fu -e teensy40 ./git/arduino/YArenaValveController/ "(/dev/ttyACM)[0-2]"
+    pyty -e teensy40 ./git/arduino/YArenaValveController/ "(/dev/ttyACM)[0-2]"
     # Environment: teensy40
     # Dry Run: False
     # Firmware URL: ./git/arduino/YArenaValveController/
@@ -102,25 +102,3 @@ class FirmwareUploader(object):
                 tmpdirpath /= repository_name
                 os.chdir(tmpdirpath)
                 self._upload()
-
-
-@click.command()
-@click.option('-e','--environment')
-@click.option('-d','--dry-run', is_flag=True)
-@click.argument('firmware_url')
-@click.argument('upload_ports_re')
-def cli(environment,dry_run,firmware_url,upload_ports_re):
-    upload_ports = list(sre_yield.AllStrings(upload_ports_re))
-
-    print('Environment: {0}'.format(environment))
-    print('Dry Run: {0}'.format(dry_run))
-    print('Firmware URL: {0}'.format(firmware_url))
-    print('Upload ports: {0}'.format(upload_ports))
-
-    if click.confirm('Do you want to continue?', abort=True):
-        fu = FirmwareUploader(environment,dry_run,firmware_url,upload_ports)
-        fu.run()
-
-# -----------------------------------------------------------------------------------------
-if __name__ == '__main__':
-    cli()

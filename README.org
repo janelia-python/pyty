@@ -27,15 +27,12 @@
      git submodule init
      git submodule update
      # x86-64bit
-     docker run -i -t -v `pwd`:/io quay.io/pypa/manylinux2014_x86_64 /bin/bash
+     docker build -f Dockerfile.bdist.x86_64 -t pyty.bdist:latest .
      # arm-64bit
-     docker run -i -t -v `pwd`:/io quay.io/pypa/manylinux2014_aarch64 /bin/bash
-     yum install gcc gcc-c++ make cmake libudev-devel qt5-qtbase-devel pkgconfig
-     cd io
+     docker build -f Dockerfile.bdist.aarch64 -t pyty.bdist:latest .
+     docker run -it -v `pwd`:/io pyty.bdist:latest /bin/bash
      git clean -xdf
-     for variant in /opt/python/*; do rm -rf build && $variant/bin/python setup.py bdist_wheel; done
-     for variant in dist/*.whl; do auditwheel repair $variant; done
-     auditwheel show dist/*.whl
+     /opt/python/cp38-cp38/bin/python setup.py sdist bdist_wheel
      auditwheel repair dist/*.whl
      exit
      twine upload -r pypi wheelhouse/*
@@ -43,7 +40,7 @@
 
 ** debian-based
 
-   pypi only hosts manylinux wheels.
+   Pypi only hosts manylinux wheels, but this can be useful for development.
 
    #+BEGIN_SRC sh
      sudo apt-get install build-essential cmake libudev-dev qtbase5-dev pkg-config
@@ -55,4 +52,5 @@
      python3 -m venv ~/venvs/env && source ~/venvs/env/bin/activate
      pip install -U pip wheel setuptools twine
      git clean -xdf && python setup.py sdist bdist_wheel && unzip -l dist/*.whl && tar --list -f dist/*.tar.gz
+     python setup.py install
    #+END_SRC

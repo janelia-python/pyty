@@ -1,4 +1,5 @@
 '''
 Tools for managing Teensy boards.
 '''
-from .firmware_uploader import FirmwareUploader, cli, __version__
+from .pyty import Pyty, __version__
+from .pyty.cli import main
