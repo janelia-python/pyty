@@ -70,35 +70,35 @@ class Pyty(object):
         if isinstance(self.upload_ports,str):
             self.upload_ports = list(sre_yield.AllStrings(self.upload_ports))
 
-    def _output(self,args):
-        if not self.dry_run:
-            subprocess.run(args)
-        else:
-            print(os.getcwd())
-            print(args)
+    # def _output(self,args):
+    #     if not self.dry_run:
+    #         subprocess.run(args)
+    #     else:
+    #         print(os.getcwd())
+    #         print(args)
 
-    def _upload(self):
-        for upload_port in self.upload_ports:
-            if self.environment is not None:
-                if 'teensy' in self.environment:
-                    # teensy loader ignores --upload-port, so must manually
-                    # put into bootloader mode by setting baud of port
-                    # before uploading
-                    self._output(['stty','-F',upload_port,'134'])
-                self._output(['pio','run','-e',self.environment,'--target','upload','--upload-port',upload_port])
-            else:
-                self._output(['pio','run','--target','upload','--upload-port',upload_port])
+    # def _upload(self):
+    #     for upload_port in self.upload_ports:
+    #         if self.environment is not None:
+    #             if 'teensy' in self.environment:
+    #                 # teensy loader ignores --upload-port, so must manually
+    #                 # put into bootloader mode by setting baud of port
+    #                 # before uploading
+    #                 self._output(['stty','-F',upload_port,'134'])
+    #             self._output(['pio','run','-e',self.environment,'--target','upload','--upload-port',upload_port])
+    #         else:
+    #             self._output(['pio','run','--target','upload','--upload-port',upload_port])
 
-    def run(self):
-        if Path(self.firmware_url).exists():
-            os.chdir(self.firmware_url)
-            self._upload()
-        else:
-            with tempfile.TemporaryDirectory() as tmpdirname:
-                tmpdirpath = Path(tmpdirname)
-                os.chdir(tmpdirpath)
-                subprocess.run(['git','clone',self.firmware_url],check=True)
-                repository_name = Path(self.firmware_url).name
-                tmpdirpath /= repository_name
-                os.chdir(tmpdirpath)
-                self._upload()
+    # def run(self):
+    #     if Path(self.firmware_url).exists():
+    #         os.chdir(self.firmware_url)
+    #         self._upload()
+    #     else:
+    #         with tempfile.TemporaryDirectory() as tmpdirname:
+    #             tmpdirpath = Path(tmpdirname)
+    #             os.chdir(tmpdirpath)
+    #             subprocess.run(['git','clone',self.firmware_url],check=True)
+    #             repository_name = Path(self.firmware_url).name
+    #             tmpdirpath /= repository_name
+    #             os.chdir(tmpdirpath)
+    #             self._upload()

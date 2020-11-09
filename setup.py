@@ -8,7 +8,7 @@ import pathlib
 
 from distutils.version import LooseVersion
 from setuptools import setup, find_packages
-from setuptools.command.install import install
+from distutils.command.install_data import install_data
 
 from codecs import open
 
@@ -17,8 +17,8 @@ here = pathlib.Path(__file__).resolve().parent
 with open(here.joinpath('DESCRIPTION.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
-class BuildTyToolsAndInstall(install):
-    """Custom handler for the 'install' command to build TyTools."""
+class BuildTyToolsAndInstallData(install_data):
+    """Custom handler for the 'install_data' command to build and install TyTools."""
 
     name = 'tytools'
     source_path_relative = pathlib.Path('src') / name
@@ -99,13 +99,13 @@ setup(
     packages=find_packages('src',exclude=['contrib', 'docs', 'tests*']),
     package_dir={'':'src'},
 
-    cmdclass={'install': BuildTyToolsAndInstall},
-
     zip_safe=True,
 
     install_requires=['Click',
                       'sre_yield',
     ],
+
+    cmdclass={'install_data': BuildTyToolsAndInstall},
 
     data_files=[('bin', ['build/tycmd',
                          'build/tycommander',
@@ -118,7 +118,7 @@ setup(
 
     entry_points={
         'console_scripts': [
-            'pyty=pyty.cli:main',
+            'pytycmd=pyty.cli:cli',
         ],
     },
 )
