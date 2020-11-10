@@ -8,7 +8,7 @@ import pathlib
 
 from distutils.version import LooseVersion
 from setuptools import setup, find_packages
-from distutils.command.install_data import install_data
+from setuptools.command.install import install
 
 from codecs import open
 
@@ -17,8 +17,8 @@ here = pathlib.Path(__file__).resolve().parent
 with open(here.joinpath('DESCRIPTION.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
-class BuildTyToolsAndInstallData(install_data):
-    """Custom handler for the 'install_data' command to build and install TyTools."""
+class BuildTyToolsAndInstall(install):
+    """Custom handler to build TyTools and install."""
 
     name = 'tytools'
     source_path_relative = pathlib.Path('src') / name
@@ -27,6 +27,11 @@ class BuildTyToolsAndInstallData(install_data):
     def run(self):
         self.build_tytools()
         super().run()
+
+    # fix for bug that causes ignored install_requires
+    @staticmethod
+    def _called_from_setup(run_frame):
+        return True
 
     def build_tytools(self):
         try:
@@ -105,7 +110,7 @@ setup(
                       'sre_yield',
     ],
 
-    cmdclass={'install_data': BuildTyToolsAndInstall},
+    cmdclass={'install': BuildTyToolsAndInstall},
 
     data_files=[('bin', ['build/tycmd',
                          'build/tycommander',
@@ -118,7 +123,7 @@ setup(
 
     entry_points={
         'console_scripts': [
-            'pytycmd=pyty.cli:cli',
+            'pytycmd=pyty.cli:pytycmd',
         ],
     },
 )

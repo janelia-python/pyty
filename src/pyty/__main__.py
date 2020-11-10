@@ -1,5 +1,4 @@
-from pyty.cli import cli
+from pyty.cli import pytycmd
 
 if __name__ == '__main__':
-    print('in __main__.py')
-    cli(prog_name="pyty")
+    pytycmd(prog_name="pytycmd")
