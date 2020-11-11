@@ -1,0 +1,12 @@
+FROM quay.io/pypa/manylinux2014_aarch64
+
+RUN yum update && yum install -y \
+    gcc \
+    gcc-c++ \
+    make \
+    cmake \
+    libudev-devel \
+    qt5-qtbase-devel \
+    pkgconfig
+
+WORKDIR /io
