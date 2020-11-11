@@ -35,7 +35,15 @@
      /opt/python/cp38-cp38/bin/python setup.py sdist bdist_wheel
      auditwheel repair dist/*.whl
      exit
-     twine upload -r pypi wheelhouse/*
+     twine upload -r pypi wheelhouse/*.whl
+   #+END_SRC
+
+   #+BEGIN_SRC sh
+     mkdir ~/venvs
+     python3 -m venv ~/venvs/pyty
+     source ~/venvs/pyty/bin/activate
+     pip install wheelhouse/*.whl
+     export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/venvs/pyty/lib/python3.8/site-packages/pyty.libs
    #+END_SRC
 
 ** debian-based
