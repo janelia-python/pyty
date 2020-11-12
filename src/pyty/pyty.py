@@ -21,6 +21,40 @@ else:
     __version__ = _dist.version
 
 
+class Pytycmd(object):
+    '''
+    Python wrapper for tycmd.
+    '''
+
+    tytools_dir = 'tytools'
+    tytools_libs_dir = 'pyty.libs'
+    tycmd_command = 'tycmd'
+    dry_run = False
+
+    def __init__(self,tycmd_args):
+        self.tycmd_args = list(tycmd_args)
+
+        self.env = os.environ.copy()
+        virtual_env_path = Path(os.environ['VIRTUAL_ENV'])
+
+        tytools_path = virtual_env_path / self.tytools_dir
+        self.env['PATH'] = self.env['PATH'] + ':' + str(tytools_path)
+
+        tytools_libs_path = sorted(virtual_env_path.rglob(self.tytools_libs_dir))[0]
+        self.env['LD_LIBRARY_PATH'] = self.env['LD_LIBRARY_PATH'] + ':' + str(tytools_libs_path)
+
+    def _output(self,args):
+        if not self.dry_run:
+            subprocess.run(args, env=self.env)
+        else:
+            print(os.getcwd())
+            print(args)
+
+    def run(self):
+        args = [self.tycmd_command] + self.tycmd_args
+        self._output(args)
+
+
 class Pyty(object):
     '''
     Tools for managing Teensy boards.

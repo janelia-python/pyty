@@ -107,14 +107,14 @@ setup(
 
     cmdclass={'install_data': BuildTyToolsAndInstallData},
 
-    data_files=[('bin', ['build/tycmd',
-                         'build/tycommander',
-                         'build/tyupdater',
-                         'build/enumerate_devices',
-                         'build/monitor_devices',
-                         'build/serial_dumper',
-                         'build/test_libty',
-                         ])],
+    data_files=[('tytools', ['build/tycmd',
+                             'build/tycommander',
+                             'build/tyupdater',
+                             'build/enumerate_devices',
+                             'build/monitor_devices',
+                             'build/serial_dumper',
+                             'build/test_libty',
+                             ])],
 
     entry_points={
         'console_scripts': [
