@@ -80,7 +80,7 @@ setup(
     url='https://github.com/janelia-pypi/pyty',
 
     author='Peter Polidoro',
-    author_email='peterpolidoro@gmail.com',
+    author_email='peter@polidoro.io',
 
     license='BSD',
 
