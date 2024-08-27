@@ -77,7 +77,7 @@ setup(
     description='Tools for managing Teensy boards.',
     long_description=long_description,
 
-    url='https://github.com/janelia-pypi/pyty',
+    url='https://github.com/janelia-python/pyty',
 
     author='Peter Polidoro',
     author_email='peter@polidoro.io',

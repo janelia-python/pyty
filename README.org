@@ -6,7 +6,7 @@
   - Name :: pyty
   - Version :: 0.1.0
   - License :: BSD
-  - URL :: https://github.com/janelia-pypi/pyty
+  - URL :: https://github.com/janelia-python/pyty
   - Author :: Peter Polidoro
   - Email :: peter@polidoro.io
 
@@ -22,7 +22,7 @@
 ** manylinux
 
    #+BEGIN_SRC sh
-     git clone https://github.com/janelia-pypi/pyty.git
+     git clone https://github.com/janelia-python/pyty.git
      cd pyty
      git submodule init
      git submodule update
@@ -50,7 +50,7 @@
 
    #+BEGIN_SRC sh
      sudo apt-get install build-essential cmake libudev-dev qtbase5-dev pkg-config
-     git clone https://github.com/janelia-pypi/pyty.git
+     git clone https://github.com/janelia-python/pyty.git
      cd pyty
      git submodule init
      git submodule update
